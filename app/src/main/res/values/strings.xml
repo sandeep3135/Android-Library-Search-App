@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">LibraryApp</string>
+    <string name="results_will_appear_here">Results will appear here</string>
+    <string name="clear_results">Clear Results</string>
+    <string name="search_book">Search Book</string>
+    <string name="digital_library_search">Digital Library Search</string>
+    <string name="enter_book_title">Enter Book Title</string>
+</resources>
