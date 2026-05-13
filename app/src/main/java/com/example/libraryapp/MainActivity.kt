@@ -30,18 +30,20 @@ class MainActivity : AppCompatActivity() {
         )
 
         // STEP 3: Add the "Click" logic
+        // 1. Search Button Logic
         searchBtn.setOnClickListener {
-            val userText = bookInput.text.toString()
+            // .trim() removes any accidental spaces at the start or end
+            val userText = bookInput.text.toString().trim()
+            //Validation: Added a check to make sure the user didn't just hit "Search" with an empty box.
+            if (userText.isEmpty()) {
+                bookInput.error = "Please enter a name"
+                return@setOnClickListener
+            }
 
             // Search logic: Check if userText matches TITLE or AUTHOR
             val foundBook = libraryBooks.find {
                 it.title.equals(userText, ignoreCase = true) ||
                         it.author.equals(userText, ignoreCase = true)
-            }
-            // 2. Set the logic to clear everything
-            clearBtn.setOnClickListener {
-                bookInput.setText("")             // Clears the input box
-                resultTxt.text = "Results cleared" // Resets the status text
             }
 
             // Display the result
@@ -50,6 +52,12 @@ class MainActivity : AppCompatActivity() {
             } else {
                 resultTxt.text = "No book or author found matching '$userText'"
             }
+        }
+
+// 2. Clear Button Logic (Moved OUTSIDE the search click listener)
+        clearBtn.setOnClickListener {
+            bookInput.setText("")
+            resultTxt.text = "Results cleared"
         }
     }
 }
