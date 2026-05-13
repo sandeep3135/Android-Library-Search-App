@@ -26,4 +26,8 @@ MainActivity.kt: Contains the core logic for finding views and executing the sea
 
 activity_main.xml: The visual layout defining the application's interface.
 
+<<<<<<< HEAD
 Book.kt: The data model representing the library's contents.
+=======
+Book.kt: The data model representing the library's contents.
+>>>>>>> 433abe533b07bf41886efd354d42213cc20ddf93
