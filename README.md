@@ -26,12 +26,8 @@ MainActivity.kt: Contains the core logic for finding views and executing the sea
 
 activity_main.xml: The visual layout defining the application's interface.
 
-<<<<<<< HEAD
-Book.kt: The data model representing the library's contents.
-=======
-Book.kt: The data model representing the library's contents.
-
 Add new feature implementation:
+Book.kt: The data model representing the library's contents.
 
 Memory-Efficient Scrolling: Uses a RecyclerView to display a long list of books without slowing down the phone by "recycling" row layouts as they move off-screen.
 
