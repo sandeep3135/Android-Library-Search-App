@@ -3,61 +3,54 @@ package com.example.libraryapp
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-
-// This is our "Data Model"
-data class Book(val title: String, val author: String)
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
+
+    // 1. Declare the variables
+    private lateinit var adapter: BookAdapter
+
+    // This is your "Database" of books
+    private val fullBookList = listOf(
+        Book("Kotlin Basics", "JetBrains"),
+        Book("Android Development", "Google"),
+        Book("Java Fundamentals", "Oracle"),
+        Book("SEO Strategy 2026", "Sandeep"),
+        Book("Mastering Git", "Linus Torvalds"),
+        Book("UI/UX Design", "Adobe")
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // STEP 1: Connect the UI elements to Kotlin (MUST BE FIRST)
-        val bookInput = findViewById<EditText>(R.id.bookInput)
-        val searchBtn = findViewById<Button>(R.id.searchBtn)
-        // 1. Find the clear button
-        val clearBtn = findViewById<Button>(R.id.clearBtn)
-        val resultTxt = findViewById<TextView>(R.id.resultTxt)
+        // 2. Initialize the views from XML
+        val rvBooks: RecyclerView = findViewById(R.id.rvBooks)
+        val etSearch: EditText = findViewById(R.id.etSearch)
+        val btnSearch: Button = findViewById(R.id.btnSearch)
 
-        // STEP 2: Create your data list
-        val libraryBooks = listOf(
-            Book("Half Girlfriend", "Chetan Bhagat"),
-            Book("The Alchemist", "Paulo Coelho"),
-            Book("Rich Dad Poor Dad", "Robert Kiyosaki")
-        )
+        // 3. Setup the RecyclerView
+        // This tells the list to show items in a vertical column
+        rvBooks.layoutManager = LinearLayoutManager(this)
 
-        // STEP 3: Add the "Click" logic
-        // 1. Search Button Logic
-        searchBtn.setOnClickListener {
-            // .trim() removes any accidental spaces at the start or end
-            val userText = bookInput.text.toString().trim()
-            //Validation: Added a check to make sure the user didn't just hit "Search" with an empty box.
-            if (userText.isEmpty()) {
-                bookInput.error = "Please enter a name"
-                return@setOnClickListener
+        // Connect the Adapter to the RecyclerView
+        adapter = BookAdapter(fullBookList)
+        rvBooks.adapter = adapter
+
+        // 4. Setup the Search logic
+        btnSearch.setOnClickListener {
+            val query = etSearch.text.toString().lowercase().trim()
+
+            // Filter the full list based on what the user typed
+            val filteredList = fullBookList.filter { book ->
+                book.title.lowercase().contains(query) ||
+                        book.author.lowercase().contains(query)
             }
 
-            // Search logic: Check if userText matches TITLE or AUTHOR
-            val foundBook = libraryBooks.find {
-                it.title.equals(userText, ignoreCase = true) ||
-                        it.author.equals(userText, ignoreCase = true)
-            }
-
-            // Display the result
-            if (foundBook != null) {
-                resultTxt.text = "Found: ${foundBook.title} \nBy: ${foundBook.author}"
-            } else {
-                resultTxt.text = "No book or author found matching '$userText'"
-            }
-        }
-
-// 2. Clear Button Logic (Moved OUTSIDE the search click listener)
-        clearBtn.setOnClickListener {
-            bookInput.setText("")
-            resultTxt.text = "Results cleared"
+            // Update the adapter to show only the filtered results
+            adapter.updateList(filteredList)
         }
     }
 }

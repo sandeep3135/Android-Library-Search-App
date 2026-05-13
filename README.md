@@ -30,4 +30,14 @@ activity_main.xml: The visual layout defining the application's interface.
 Book.kt: The data model representing the library's contents.
 =======
 Book.kt: The data model representing the library's contents.
+
+Add new feature implementation:
+
+Memory-Efficient Scrolling: Uses a RecyclerView to display a long list of books without slowing down the phone by "recycling" row layouts as they move off-screen.
+
+Dynamic Data Binding: Connects your Book.kt data class (Title and Author) to a custom design in item_book.xml using a "Bridge" called the BookAdapter.
+
+Real-Time Search Filtering: Allows users to type into the search box to filter the list instantly. If the search box is empty, it resets to show the full library.
+
+Improved User Interface (UI): Organizes the screen so the search tools stay at the top while the list takes up the remaining space.
 >>>>>>> 433abe533b07bf41886efd354d42213cc20ddf93

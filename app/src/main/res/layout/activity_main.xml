@@ -3,45 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
-    android:gravity="center_horizontal">
+    android:padding="16dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/digital_library_search"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp"/>
-
+    <!-- 1. The Search Input -->
     <EditText
-        android:id="@+id/bookInput"
+        android:id="@+id/etSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_book_title"
-        android:inputType="textPersonName" />
+        android:hint="Search title or author..."
+        android:inputType="text"
+        android:minHeight="48dp" />
 
+    <!-- 2. The Search Button -->
     <Button
-        android:id="@+id/searchBtn"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnSearch"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/search_book"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="8dp"
+        android:text="Search Library" />
 
-    <Button
-        android:id="@+id/clearBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/clear_results"
-        android:backgroundTint="#FF5722"
-        android:layout_marginTop="5dp"/>
-
-    <TextView
-        android:id="@+id/resultTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/results_will_appear_here"
-        android:layout_marginTop="30dp"
-        android:textSize="18sp" />
+    <!-- 3. The RecyclerView (The List) -->
+    <!-- We set weight to 1 so it takes up the remaining screen space -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvBooks"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>
