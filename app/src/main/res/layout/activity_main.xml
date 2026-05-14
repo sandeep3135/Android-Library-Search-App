@@ -1,55 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Wrap everything in a FrameLayout so the button can "float" -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- NEW: Inputs for adding a book -->
-    <EditText
-        android:id="@+id/etNewTitle"
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Search UI stays at the top -->
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search library..." />
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Search Library" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBooks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+    <!-- This now floats in the bottom right corner -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddBook"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Enter Book Title" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
+        android:contentDescription="Add New Book"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="#4CAF50"
+        app:tint="@color/white"/>
 
-    <EditText
-        android:id="@+id/etNewAuthor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Author Name" />
-
-    <Button
-        android:id="@+id/btnAddBook"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#4CAF50"
-        android:text="Add to Library" />
-
-    <!-- A small line to separate "Add" from "Search" -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginVertical="16dp"
-        android:background="#CCCCCC" />
-
-    <!-- Your existing Search UI -->
-    <EditText
-        android:id="@+id/etSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search library..." />
-
-    <Button
-        android:id="@+id/btnSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Search Library" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBooks"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp" />
-
-</LinearLayout>
+</FrameLayout>

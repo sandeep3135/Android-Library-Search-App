@@ -33,10 +33,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         loadBooks()
 
-        // CHANGE 2: Link the new UI elements
-        val etNewTitle: EditText = findViewById(R.id.etNewTitle)
-        val etNewAuthor: EditText = findViewById(R.id.etNewAuthor)
-        val btnAddBook: Button = findViewById(R.id.btnAddBook)
+        // Link the new Floating Action Button
+        val fabAddBook: com.google.android.material.floatingactionbutton.FloatingActionButton = findViewById(R.id.fabAddBook)
 
         // 2. Initialize the views from XML
         val rvBooks: RecyclerView = findViewById(R.id.rvBooks)
@@ -51,24 +49,12 @@ class MainActivity : AppCompatActivity() {
         adapter = BookAdapter(fullBookList)
         rvBooks.adapter = adapter
 
-        // CHANGE 3: The Add Book Logic
-        btnAddBook.setOnClickListener {
-            val title = etNewTitle.text.toString().trim()
-            val author = etNewAuthor.text.toString().trim()
-
-            if (title.isNotEmpty() && author.isNotEmpty()) {
-                // Add new book to the list
-                fullBookList.add(Book(title, author))
-
-                // Refresh the adapter to show the new item
-                adapter.updateList(fullBookList)
-
-                // Clear inputs for the next entry
-                etNewTitle.text.clear()
-                etNewAuthor.text.clear()
-                saveBooks()
-            }
+        // Set the click listener to open the Pop-up Dialog
+        fabAddBook.setOnClickListener {
+            showAddBookDialog()
         }
+
+
         // 4. Setup the Search logic
         btnSearch.setOnClickListener {
             val query = etSearch.text.toString().lowercase().trim()
@@ -94,6 +80,41 @@ class MainActivity : AppCompatActivity() {
         // Save the string to the phone's memory
         editor.putString("book_list", json)
         editor.apply()
+    }
+
+    private fun showAddBookDialog() {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("Add New Book")
+
+        // We create a container to hold our input fields inside the pop-up
+        val layout = android.widget.LinearLayout(this)
+        layout.orientation = android.widget.LinearLayout.VERTICAL
+        layout.setPadding(60, 40, 60, 10)
+
+        val inputTitle = android.widget.EditText(this)
+        inputTitle.hint = "Book Title"
+        layout.addView(inputTitle)
+
+        val inputAuthor = android.widget.EditText(this)
+        inputAuthor.hint = "Author Name"
+        layout.addView(inputAuthor)
+
+        builder.setView(layout)
+
+        // When the user clicks "Add"
+        builder.setPositiveButton("Add") { _, _ ->
+            val title = inputTitle.text.toString().trim()
+            val author = inputAuthor.text.toString().trim()
+
+            if (title.isNotEmpty() && author.isNotEmpty()) {
+                fullBookList.add(Book(title, author))
+                saveBooks() // Use your existing save logic
+                adapter.updateList(fullBookList)
+            }
+        }
+
+        builder.setNegativeButton("Cancel", null)
+        builder.show()
     }
 
     private fun loadBooks() {
