@@ -50,3 +50,11 @@ User Input Interface: You added two EditText fields (Title and Author) and an "A
 Adapter Synchronization: You implemented logic that takes user input, creates a new Book object, and tells the BookAdapter to refresh the RecyclerView using notifyDataSetChanged() (via your updateList function).
 
 Input Validation: You added a check to ensure users don't add empty books to the library.
+
+Add new feature:
+🎓 Summary of what you just achieved:
+Serialization: You learned how to turn complex objects into JSON strings so a computer can "remember" them. 
+SharedPreferences: You mastered the standard way to store user settings and small data sets in Android.
+Version Control: You successfully used a feature branch to troubleshoot and fix library errors before going live.
+
+How did the test go? Is your new book still showing up after the restart?

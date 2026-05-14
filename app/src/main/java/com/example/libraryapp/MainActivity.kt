@@ -6,6 +6,8 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        loadBooks()
 
         // CHANGE 2: Link the new UI elements
         val etNewTitle: EditText = findViewById(R.id.etNewTitle)
@@ -63,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                 // Clear inputs for the next entry
                 etNewTitle.text.clear()
                 etNewAuthor.text.clear()
+                saveBooks()
             }
         }
         // 4. Setup the Search logic
@@ -76,6 +80,34 @@ class MainActivity : AppCompatActivity() {
 
             // Update the adapter to show only the filtered results
             adapter.updateList(filteredList)
+        }
+    }
+
+    private fun saveBooks() {
+        val sharedPreferences = getSharedPreferences("LibraryPrefs", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+
+        // Convert our list into a JSON string
+        val json = gson.toJson(fullBookList)
+
+        // Save the string to the phone's memory
+        editor.putString("book_list", json)
+        editor.apply()
+    }
+
+    private fun loadBooks() {
+        val sharedPreferences = getSharedPreferences("LibraryPrefs", MODE_PRIVATE)
+        val gson = Gson()
+        val json = sharedPreferences.getString("book_list", null)
+
+        if (json != null) {
+            // This complex line tells Gson exactly how to turn text back into a List of Books
+            val type = object : TypeToken<MutableList<Book>>() {}.type
+            val savedList: MutableList<Book> = gson.fromJson(json, type)
+
+            fullBookList.clear()
+            fullBookList.addAll(savedList)
         }
     }
 }
