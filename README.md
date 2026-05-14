@@ -36,4 +36,17 @@ Dynamic Data Binding: Connects your Book.kt data class (Title and Author) to a c
 Real-Time Search Filtering: Allows users to type into the search box to filter the list instantly. If the search box is empty, it resets to show the full library.
 
 Improved User Interface (UI): Organizes the screen so the search tools stay at the top while the list takes up the remaining space.
->>>>>>> 433abe533b07bf41886efd354d42213cc20ddf93
+
+Add new feature:
+The "Dynamic Book Entry" Feature
+
+This feature transforms the library from a "Read-Only" list into an interactive application where users can contribute data.
+
+🛠️ What was implemented:
+Mutable Data Handling: You upgraded the project logic from a fixed listOf to a mutableListOf, allowing the app to grow as the user adds data.
+
+User Input Interface: You added two EditText fields (Title and Author) and an "Add" button to the main screen.
+
+Adapter Synchronization: You implemented logic that takes user input, creates a new Book object, and tells the BookAdapter to refresh the RecyclerView using notifyDataSetChanged() (via your updateList function).
+
+Input Validation: You added a check to ensure users don't add empty books to the library.
