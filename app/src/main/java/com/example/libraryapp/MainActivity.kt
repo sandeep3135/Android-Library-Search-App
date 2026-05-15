@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         // 2. Initialize the views from XML
         val rvBooks: RecyclerView = findViewById(R.id.rvBooks)
         val etSearch: EditText = findViewById(R.id.etSearch)
-        val btnSearch: Button = findViewById(R.id.btnSearch)
 
         // 3. Setup the RecyclerView
         // This tells the list to show items in a vertical column
@@ -57,17 +56,22 @@ class MainActivity : AppCompatActivity() {
 
 
         // 4. Setup the Search logic
-        btnSearch.setOnClickListener {
-            val query = etSearch.text.toString().lowercase().trim()
+        // We use a listener that "watches" the EditText for any changes
+        etSearch.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            // Filter the full list based on what the user typed
-            val filteredList = fullBookList.filter {
-                it.title.lowercase().contains(query) || it.author.lowercase().contains(query)
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // This code runs every time you type or delete a letter!
+                val query = s.toString().lowercase().trim()
+
+                val filteredList = fullBookList.filter {
+                    it.title.lowercase().contains(query) || it.author.lowercase().contains(query)
+                }
+                adapter.updateList(filteredList)
             }
 
-            // Update the adapter to show only the filtered results
-            adapter.updateList(filteredList)
-        }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
     }
 
     private fun saveBooks() {
@@ -108,10 +112,23 @@ class MainActivity : AppCompatActivity() {
             val author = inputAuthor.text.toString().trim()
 
             if (title.isNotEmpty() && author.isNotEmpty()) {
-                fullBookList.add(Book(title, author))
-                saveBooks() // Use your existing save logic
-                adapter.updateList(fullBookList)
-                checkEmptyState()
+
+                // LOGIC: Check if this exact Title AND Author already exist (ignoring Case)
+                val isDuplicate = fullBookList.any {
+                    it.title.equals(title, ignoreCase = true) &&
+                            it.author.equals(author, ignoreCase = true)
+                }
+
+                if (isDuplicate) {
+                    // If it's a match, show a warning and do NOT add
+                    android.widget.Toast.makeText(this, "This book & author already exist!", android.widget.Toast.LENGTH_SHORT).show()
+                } else {
+                    // If it's unique, add it as usual
+                    fullBookList.add(Book(title, author))
+                    saveBooks()
+                    adapter.updateList(fullBookList)
+                    checkEmptyState()
+                }
             }
         }
 
