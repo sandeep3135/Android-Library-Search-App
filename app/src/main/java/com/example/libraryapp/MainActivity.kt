@@ -131,4 +131,27 @@ class MainActivity : AppCompatActivity() {
             fullBookList.addAll(savedList)
         }
     }
+
+    // This function must be 'fun' (not private) so the Adapter can see it
+    fun showDeleteDialog(position: Int) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        builder.setTitle("Delete Book")
+        builder.setMessage("Do you want to remove '${fullBookList[position].title}' from your library?")
+
+        builder.setPositiveButton("Delete") { _, _ ->
+            // 1. Remove the book from our list
+            fullBookList.removeAt(position)
+
+            // 2. Save the new list to SharedPreferences (Persistence!)
+            saveBooks()
+
+            // 3. Tell the adapter to refresh the UI
+            adapter.updateList(fullBookList)
+
+            android.widget.Toast.makeText(this, "Book removed", android.widget.Toast.LENGTH_SHORT).show()
+        }
+
+        builder.setNegativeButton("Cancel", null)
+        builder.show()
+    }
 }

@@ -24,10 +24,21 @@ class BookAdapter(private var bookList: List<Book>) :
     }
 
     // 2. onBindViewHolder: "Glues" the data (from Book.kt) into the views (item_book.xml)
+
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
-        val currentBook = bookList[position]
-        holder.tvTitle.text = currentBook.title
-        holder.tvAuthor.text = currentBook.author
+        val context = holder.itemView.context
+        val book = bookList[position]
+        holder.tvTitle.text = book.title
+        holder.tvAuthor.text = book.author
+
+        // Add this Long-Press Logic
+        holder.itemView.setOnLongClickListener {
+            // We will call a function in MainActivity to handle the deletion
+            if (context is MainActivity) {
+                context.showDeleteDialog(position)
+            }
+            true // This tells Android we handled the long click
+        }
     }
 
     // 3. Tells the RecyclerView how many items are in the list
