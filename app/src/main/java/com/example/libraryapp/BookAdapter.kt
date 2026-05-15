@@ -39,6 +39,13 @@ class BookAdapter(private var bookList: List<Book>) :
             }
             true // This tells Android we handled the long click
         }
+
+        //add a standard click listener (not long click)
+        holder.itemView.setOnClickListener {
+            if (context is MainActivity) {
+                context.showEditBookDialog(position)
+            }
+        }
     }
 
     // 3. Tells the RecyclerView how many items are in the list

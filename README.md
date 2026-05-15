@@ -58,3 +58,12 @@ SharedPreferences: You mastered the standard way to store user settings and smal
 Version Control: You successfully used a feature branch to troubleshoot and fix library errors before going live.
 
 How did the test go? Is your new book still showing up after the restart?
+
+
+Professional CRUD & UI State Management:-
+
+New Features Implemented:
+Update Logic: Integrated a standard click listener on list items to trigger an "Edit Book" dialog, allowing users to modify existing data.
+Empty State UI: Built a dynamic layout that automatically shows a "Library is Empty" message with custom icons when the list is cleared.
+UI Modernization: Refactored the layout using `FrameLayout` for layered views and added `elevation` and `padding` for a Material Design look.
+Code Documentation: Added professional XML and Kotlin comments to explain the "why" behind the code structures.

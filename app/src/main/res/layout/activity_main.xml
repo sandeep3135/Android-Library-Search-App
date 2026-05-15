@@ -1,34 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Wrap everything in a FrameLayout so the button can "float" -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"> <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:elevation="2dp"
+        android:padding="4dp">
 
-        <!-- Search UI stays at the top -->
         <EditText
             android:id="@+id/etSearch"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Search library..." />
+            android:layout_weight="1"
+            android:hint="Search title or author..."
+            android:background="@null"
+            android:padding="12dp"
+            android:textSize="16sp" />
 
+        <!-- Search UI stays at the top -->
         <Button
             android:id="@+id/btnSearch"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search Library" />
+            android:text="Search"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+    </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvBooks"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvBooks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="12dp"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp" /> </LinearLayout>
+
+    <LinearLayout
+
+        android:id="@+id/tvEmptyMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📚"
+            android:textSize="50sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your library is empty"
+            android:textColor="#333333"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap the + button to add your first book"
+            android:textColor="#777777"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <!-- This now floats in the bottom right corner -->
@@ -41,6 +86,7 @@
         android:contentDescription="Add New Book"
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="#4CAF50"
-        app:tint="@color/white"/>
+        app:tint="@android:color/white"
+        app:elevation="6dp" />
 
 </FrameLayout>
