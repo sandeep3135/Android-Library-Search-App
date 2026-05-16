@@ -3,26 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@drawable/bg_book_card"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:padding="16dp"
+    android:elevation="1dp">
 
-    <!-- This TextView will display the Book Title -->
     <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Book Title"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black" />
+    android:id="@+id/tvTitle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Book Title"
+    android:textColor="@color/primary_dark"
+    android:textSize="18sp"
+    android:textStyle="bold" />
 
-    <!-- This TextView will display the Author Name -->
     <TextView
         android:id="@+id/tvAuthor"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Author Name"
+        android:textColor="@color/text_muted"
         android:textSize="14sp"
-        android:textColor="#757575"
         android:layout_marginTop="4dp" />
 
 </LinearLayout>

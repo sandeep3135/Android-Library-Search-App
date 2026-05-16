@@ -13,9 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@android:color/white"
-        android:elevation="2dp"
-        android:padding="4dp">
+        android:background="@drawable/bg_search_bar" android:padding="4dp">
 
         <EditText
             android:id="@+id/etSearch"
@@ -57,16 +55,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your library is empty"
-            android:textColor="#333333"
-            android:textSize="18sp"
+            android:textColor="@color/primary_dark" android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tap the + button to add your first book"
-            android:textColor="#777777"
-            android:textSize="14sp" />
+            android:textColor="@color/text_muted" android:textSize="14sp" />
     </LinearLayout>
 
     <!-- This now floats in the bottom right corner -->
@@ -78,8 +74,7 @@
         android:layout_margin="24dp"
         android:contentDescription="Add New Book"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#4CAF50"
-        app:tint="@android:color/white"
-        app:elevation="6dp" />
+        app:backgroundTint="@color/accent_blue" app:tint="@android:color/white"
+        app:elevation="4dp" />
 
 </FrameLayout>
