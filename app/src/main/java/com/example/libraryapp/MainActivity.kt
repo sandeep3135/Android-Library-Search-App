@@ -118,6 +118,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // 6. Setup Light/Dark Mode Toggle
+        val btnThemeToggle: android.widget.ImageButton = findViewById(R.id.btnThemeToggle)
+
+        btnThemeToggle.setOnClickListener {
+            // Check what theme the app is currently running
+            val currentMode = androidx.appcompat.app.AppCompatDelegate.getDefaultNightMode()
+
+            if (currentMode == androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES) {
+                // If it's dark, switch to light mode
+                androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+                    androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+                )
+                android.widget.Toast.makeText(this, "Light Mode Activated", android.widget.Toast.LENGTH_SHORT).show()
+            } else {
+                // If it's light/default, switch to dark mode
+                androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+                    androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+                )
+                android.widget.Toast.makeText(this, "Dark Mode Activated", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+
         // Attach our new controller layout to the RecyclerView frame
         val itemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(rvBooks)

@@ -12,20 +12,20 @@
     android:elevation="1dp">
 
     <TextView
-    android:id="@+id/tvTitle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Book Title"
-    android:textColor="@color/primary_dark"
-    android:textSize="18sp"
-    android:textStyle="bold" />
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Book Title"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvAuthor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Author Name"
-        android:textColor="@color/text_muted"
+        android:textColor="?android:attr/textColorSecondary"
         android:textSize="14sp"
         android:layout_marginTop="4dp" />
 
