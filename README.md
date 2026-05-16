@@ -60,10 +60,27 @@ Version Control: You successfully used a feature branch to troubleshoot and fix 
 How did the test go? Is your new book still showing up after the restart?
 
 
+New Features Implemented:
 Professional CRUD & UI State Management:-
 
-New Features Implemented:
 Update Logic: Integrated a standard click listener on list items to trigger an "Edit Book" dialog, allowing users to modify existing data.
 Empty State UI: Built a dynamic layout that automatically shows a "Library is Empty" message with custom icons when the list is cleared.
 UI Modernization: Refactored the layout using `FrameLayout` for layered views and added `elevation` and `padding` for a Material Design look.
 Code Documentation: Added professional XML and Kotlin comments to explain the "why" behind the code structures.
+
+
+New Features Implemented:
+UI Personalization & Custom Themes
+
+Layout & Styling Upgrades:- 
+Custom Shape Drawables: Designed `bg_search_bar` and `bg_book_card` in XML to create fluid, modern capsule shapes and card layouts with precise border strokes.
+Centralized Color Palette: Restructured `colors.xml` using a premium tech-focused theme (`primary_dark`, `accent_blue`, and `text_muted`) for uniform color management. 
+Component Refactoring: Updated individual `item_book.xml` item rows to use elevation shadows, precise interior padding, and custom margins for clean list separation.
+
+
+New Features Implemented:
+Advanced Gesture Mechanics & Touch Safety:-
+
+Bi-Directional Swiping: Integrated an `ItemTouchHelper` to detect fluid Left and Right swipe gestures across all list item cards.
+System Gesture Interception: Engineered a fallback routine using `adapter.notifyItemChanged(position)` to safely catch accidental swipes caused by Android's global edge-to-back navigation.
+Context-Aware Dialog Pools: Refactored the underlying Adapter signature to pass `bookList` dynamically, completely neutralizing position shifts during active live searches.

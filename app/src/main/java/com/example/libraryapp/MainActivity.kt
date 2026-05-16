@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         val etSearch: EditText = findViewById(R.id.etSearch)
 
         // 3. Setup the RecyclerView
-        // This tells the list to show items in a vertical column
         rvBooks.layoutManager = LinearLayoutManager(this)
 
         // Connect the Adapter to the RecyclerView
@@ -54,16 +53,12 @@ class MainActivity : AppCompatActivity() {
             showAddBookDialog()
         }
 
-
         // 4. Setup the Search logic
-        // We use a listener that "watches" the EditText for any changes
         etSearch.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // This code runs every time you type or delete a letter!
                 val query = s.toString().lowercase().trim()
-
                 val filteredList = fullBookList.filter {
                     it.title.lowercase().contains(query) || it.author.lowercase().contains(query)
                 }
@@ -72,6 +67,60 @@ class MainActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: android.text.Editable?) {}
         })
+
+        // 5. ADDED GESTURE LOGIC: Swipe-to-Delete with Confirmation Box
+        val swipeHandler = object : androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback(
+            0,
+            androidx.recyclerview.widget.ItemTouchHelper.LEFT or androidx.recyclerview.widget.ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+
+                // Read the actual list currently visible inside the Adapter
+                val currentList = adapter.getBookList()
+                val bookToDelete = currentList[position]
+
+                // Show the explicit confirmation pop-up dialog
+                val builder = androidx.appcompat.app.AlertDialog.Builder(this@MainActivity)
+                builder.setTitle("Delete Book")
+                builder.setMessage("Are you sure you want to remove '${bookToDelete.title}'?")
+                builder.setCancelable(false) // Force user to use a button
+
+                // If user confirms delete action
+                builder.setPositiveButton("Delete") { _, _ ->
+                    fullBookList.remove(bookToDelete) // Delete by object identity, not raw position
+                    saveBooks()
+
+                    // Re-filter the UI list using current search input
+                    val query = etSearch.text.toString().lowercase().trim()
+                    val updatedFilteredList = fullBookList.filter {
+                        it.title.lowercase().contains(query) || it.author.lowercase().contains(query)
+                    }
+                    adapter.updateList(updatedFilteredList)
+                    checkEmptyState()
+
+                    android.widget.Toast.makeText(this@MainActivity, "Book removed", android.widget.Toast.LENGTH_SHORT).show()
+                }
+
+                // If user clicks cancel, push the item card right back to center screen
+                builder.setNegativeButton("Cancel") { dialog, _ ->
+                    adapter.notifyItemChanged(position)
+                    dialog.dismiss()
+                }
+
+                builder.show()
+            }
+        }
+
+        // Attach our new controller layout to the RecyclerView frame
+        val itemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(rvBooks)
     }
 
     private fun saveBooks() {
@@ -152,20 +201,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     // This function must be 'fun' (not private) so the Adapter can see it
-    fun showDeleteDialog(position: Int) {
+    // Updated: Accept currentList parameter so it works perfectly during search sessions
+    fun showDeleteDialog(position: Int, currentList: List<Book>) {
         val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+        val bookToDelete = currentList[position]
+
         builder.setTitle("Delete Book")
-        builder.setMessage("Do you want to remove '${fullBookList[position].title}' from your library?")
+        builder.setMessage("Do you want to remove '${bookToDelete.title}' from your library?")
 
         builder.setPositiveButton("Delete") { _, _ ->
-            // 1. Remove the book from our list
-            fullBookList.removeAt(position)
-
-            // 2. Save the new list to SharedPreferences (Persistence!)
+            fullBookList.remove(bookToDelete) // Delete by object matching
             saveBooks()
 
-            // 3. Tell the adapter to refresh the UI
-            adapter.updateList(fullBookList)
+            // Refresh layout using whatever text is in search input field
+            val etSearch: EditText = findViewById(R.id.etSearch)
+            val query = etSearch.text.toString().lowercase().trim()
+            val updatedList = fullBookList.filter {
+                it.title.lowercase().contains(query) || it.author.lowercase().contains(query)
+            }
+            adapter.updateList(updatedList)
             checkEmptyState()
 
             android.widget.Toast.makeText(this, "Book removed", android.widget.Toast.LENGTH_SHORT).show()
@@ -175,40 +229,50 @@ class MainActivity : AppCompatActivity() {
         builder.show()
     }
 // this function for updating the book list
-    fun showEditBookDialog(position: Int) {
-        val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-        builder.setTitle("Edit Book")
+// Updated: Pre-fills and edits data based on the accurate current list view
+fun showEditBookDialog(position: Int, currentList: List<Book>) {
+    val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+    val bookToEdit = currentList[position]
+    builder.setTitle("Edit Book")
 
-        val layout = android.widget.LinearLayout(this)
-        layout.orientation = android.widget.LinearLayout.VERTICAL
-        layout.setPadding(60, 40, 60, 10)
+    val layout = android.widget.LinearLayout(this)
+    layout.orientation = android.widget.LinearLayout.VERTICAL
+    layout.setPadding(60, 40, 60, 10)
 
-        val inputTitle = android.widget.EditText(this)
-        // PRE-FILL: Set text to the current title
-        inputTitle.setText(fullBookList[position].title)
-        layout.addView(inputTitle)
+    val inputTitle = android.widget.EditText(this)
+    inputTitle.setText(bookToEdit.title) // Pre-fill accurately
+    layout.addView(inputTitle)
 
-        val inputAuthor = android.widget.EditText(this)
-        // PRE-FILL: Set text to the current author
-        inputAuthor.setText(fullBookList[position].author)
-        layout.addView(inputAuthor)
+    val inputAuthor = android.widget.EditText(this)
+    inputAuthor.setText(bookToEdit.author) // Pre-fill accurately
+    layout.addView(inputAuthor)
 
-        builder.setView(layout)
+    builder.setView(layout)
 
-        builder.setPositiveButton("Update") { _, _ ->
-            val newTitle = inputTitle.text.toString().trim()
-            val newAuthor = inputAuthor.text.toString().trim()
+    builder.setPositiveButton("Update") { _, _ ->
+        val newTitle = inputTitle.text.toString().trim()
+        val newAuthor = inputAuthor.text.toString().trim()
 
-            if (newTitle.isNotEmpty() && newAuthor.isNotEmpty()) {
-                // Update the data in the list
-                fullBookList[position] = Book(newTitle, newAuthor)
-                saveBooks() // Save changes
-                adapter.updateList(fullBookList) // Refresh UI
+        if (newTitle.isNotEmpty() && newAuthor.isNotEmpty()) {
+            // Locate where the book sits inside master array database index
+            val masterIndex = fullBookList.indexOf(bookToEdit)
+            if (masterIndex != -1) {
+                fullBookList[masterIndex] = Book(newTitle, newAuthor)
+                saveBooks()
+
+                // Refresh view layout
+                val etSearch: EditText = findViewById(R.id.etSearch)
+                val query = etSearch.text.toString().lowercase().trim()
+                val updatedList = fullBookList.filter {
+                    it.title.lowercase().contains(query) || it.author.lowercase().contains(query)
+                }
+                adapter.updateList(updatedList)
             }
         }
-        builder.setNegativeButton("Cancel", null)
-        builder.show()
     }
+    builder.setNegativeButton("Cancel", null)
+    builder.show()
+}
 
     private fun checkEmptyState() {
         // Change TextView to View so it works with any layout type

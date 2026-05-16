@@ -31,27 +31,29 @@ class BookAdapter(private var bookList: List<Book>) :
         holder.tvTitle.text = book.title
         holder.tvAuthor.text = book.author
 
-        // Add this Long-Press Logic
-        holder.itemView.setOnLongClickListener {
-            // We will call a function in MainActivity to handle the deletion
-            if (context is MainActivity) {
-                context.showDeleteDialog(position)
-            }
-            true // This tells Android we handled the long click
-        }
-
-        //add a standard click listener (not long click)
+        // Standard Click = EDIT (Updated to pass the current bookList)
         holder.itemView.setOnClickListener {
             if (context is MainActivity) {
-                context.showEditBookDialog(position)
+                context.showEditBookDialog(position, bookList) // Added bookList here
             }
+        }
+        // Long Click = DELETE (Updated to pass the current bookList)
+        holder.itemView.setOnLongClickListener {
+            if (context is MainActivity) {
+                context.showDeleteDialog(position, bookList) // Added bookList here
+            }
+            true
         }
     }
 
     // 3. Tells the RecyclerView how many items are in the list
     override fun getItemCount(): Int = bookList.size
 
-    // This special function helps us update the list when we search!
+    fun getBookList(): List<Book> {
+        return this.bookList
+    }
+
+    // // Your helper function to change/update the dataset
     fun updateList(newList: List<Book>) {
         this.bookList = newList
         notifyDataSetChanged() // Refreshes the screen
