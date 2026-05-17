@@ -84,3 +84,11 @@ Advanced Gesture Mechanics & Touch Safety:-
 Bi-Directional Swiping: Integrated an `ItemTouchHelper` to detect fluid Left and Right swipe gestures across all list item cards.
 System Gesture Interception: Engineered a fallback routine using `adapter.notifyItemChanged(position)` to safely catch accidental swipes caused by Android's global edge-to-back navigation.
 Context-Aware Dialog Pools: Refactored the underlying Adapter signature to pass `bookList` dynamically, completely neutralizing position shifts during active live searches.
+
+
+New Features Implemented:
+Dynamic Dark Theme Architectures:-
+
+Theme Inversion Toggle: Embedded an `AppCompatDelegate` toggle mechanism connected to an interactive top-bar asset action listener.
+Semantic Asset Decoupling: Migrated vector drawables (`bg_search_bar` and `bg_book_card`) away from hardcoded color channels to dynamic system pointers (`?attr/colorSurface` and `?android:attr/colorBackground`).
+Adaptive Typography Contracts: Refactored text rendering across elements to consume `?android:attr/textColorPrimary` and `textColorSecondary`, ensuring high-contrast visibility across runtime contexts.
