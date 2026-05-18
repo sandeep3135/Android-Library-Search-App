@@ -302,7 +302,7 @@ fun showEditBookDialog(position: Int, currentList: List<Book>) {
         if (fullBookList.isEmpty()) {
             emptyStateContainer.visibility = android.view.View.VISIBLE
             // Temporary Debug Toast:
-            android.widget.Toast.makeText(this, "List is EMPTY!", android.widget.Toast.LENGTH_SHORT).show()
+            //android.widget.Toast.makeText(this, "List is EMPTY!", android.widget.Toast.LENGTH_SHORT).show()
         } else {
             emptyStateContainer.visibility = android.view.View.GONE
         }

@@ -62,28 +62,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical"
         android:gravity="center"
-        android:visibility="gone">
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="📚"
-            android:textSize="50sp" />
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="Empty Library Graphic"
+            android:src="@drawable/ic_empty_library" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your library is empty"
-            android:textColor="@color/primary_dark" android:textSize="18sp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:text="Tap the + button to add your first book"
-            android:textColor="@color/text_muted" android:textSize="14sp" />
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="14sp" />
+
     </LinearLayout>
 
     <!-- This now floats in the bottom right corner -->
